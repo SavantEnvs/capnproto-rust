@@ -1,0 +1,16 @@
+# capnproto-rust in-process libFuzzer target (cargo-fuzz / libfuzzer-sys) —
+# upstream's own capnp/fuzz/fuzzers/test_all_types.rs: parses fuzz bytes as a
+# framed Cap'n Proto message typed as the TestAllTypes schema (every scalar,
+# blob, struct, enum and list field), traverses all fields, then round-trips
+# the message through set_root/canonicalization and asserts deep structural
+# equality between the original and the copies.
+project: savantenvs/capnproto-rust
+target: test_all_types
+
+cmds:
+  - cmd: /mayhem/test_all_types
+    libfuzzer: true
+
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/test_all_types/testsuite
