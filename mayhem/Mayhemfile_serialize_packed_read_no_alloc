@@ -1,0 +1,16 @@
+# capnproto-rust in-process libFuzzer target (cargo-fuzz / libfuzzer-sys) —
+# upstream's own capnp/fuzz/fuzzers/serialize_packed_read_no_alloc.rs: parses
+# fuzz bytes as a PACKED Cap'n Proto message through the no-alloc reader
+# (serialize_packed::read_message_no_alloc) into a fixed 512-word buffer with a
+# 256-word traversal limit — exercises the packing decompressor + segment-table
+# validation on the allocation-free code path.
+project: savantenvs/capnproto-rust
+target: serialize_packed_read_no_alloc
+
+cmds:
+  - cmd: /mayhem/serialize_packed_read_no_alloc
+    libfuzzer: true
+
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/serialize_packed_read_no_alloc/testsuite

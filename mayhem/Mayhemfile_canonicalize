@@ -1,0 +1,16 @@
+# capnproto-rust in-process libFuzzer target (cargo-fuzz / libfuzzer-sys) —
+# upstream's own capnp/fuzz/fuzzers/canonicalize.rs: parses fuzz bytes as a
+# framed Cap'n Proto message (serialize::read_message), canonicalizes it, and
+# asserts the canonicalization invariants (canonical output is_canonical, and
+# re-canonicalizing is a fixed point; already-canonical input must round-trip
+# byte-for-byte).
+project: savantenvs/capnproto-rust
+target: canonicalize
+
+cmds:
+  - cmd: /mayhem/canonicalize
+    libfuzzer: true
+
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/canonicalize/testsuite
