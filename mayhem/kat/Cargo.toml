@@ -1,0 +1,23 @@
+# Known-answer-test (KAT) oracle probe for the Mayhem integration. Standalone
+# crate under mayhem/ — the [workspace] table keeps it OUT of the root
+# workspace's resolution (we never touch upstream's Cargo.toml).
+# It only CALLS the unmodified capnp library via a path dependency; its build.rs
+# compiles upstream's own fuzz schema (capnp/fuzz/fuzzers/test.capnp) with the
+# unmodified capnpc code generator (which shells out to the apt-installed
+# `capnp` tool — baked into the image by mayhem/Dockerfile).
+[package]
+name = "capnp-kat"
+version = "0.0.0"
+publish = false
+edition = "2021"
+build = "build.rs"
+
+[dependencies.capnp]
+path = "../../capnp"
+
+[build-dependencies.capnpc]
+path = "../../capnpc"
+
+# Keep this crate out of the root crate's workspace resolution.
+[workspace]
+members = ["."]
