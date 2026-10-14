@@ -1,0 +1,14 @@
+# capnproto-rust in-process libFuzzer target (mining harness, not upstream's):
+# parses fuzz bytes with serialize::BufferSegments::new (the zero-copy flat-buffer
+# reader) and reads the message through it. None of upstream's own fuzzers call it.
+# seed-from: https://app.mayhem.security/savantenvs/capnproto-rust/canonicalize
+project: savantenvs/capnproto-rust
+target: buffer_segments-mined-89c8dbe
+
+cmds:
+  - cmd: /mayhem/buffer_segments
+    libfuzzer: true
+
+testsuite:
+  - https://$MAYHEM_DOMAIN/$MAYHEM_PROJECT/$MAYHEM_TARGET/testsuite.tar
+  - file://mayhem/buffer_segments-mined-89c8dbe/testsuite
